@@ -1,6 +1,7 @@
 package com.racalixta.desafioanotaai.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,9 @@ public class CategoryService {
 	
 	public List<Category> getAll() {
 		return this.repository.findAll();
+	}
+	
+	public Optional<Category> getById(String id) {
+		return this.repository.findById(id);
 	}
 }
