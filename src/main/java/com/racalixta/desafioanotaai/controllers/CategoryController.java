@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.racalixta.desafioanotaai.domain.category.Category;
 import com.racalixta.desafioanotaai.domain.category.CategoryDTO;
 import com.racalixta.desafioanotaai.services.CategoryService;
-
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/api/category")
@@ -40,13 +39,13 @@ public class CategoryController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Category> update(@PathParam("id") String id, @RequestBody CategoryDTO categoryData) {
+	public ResponseEntity<Category> update(@PathVariable("id") String id, @RequestBody CategoryDTO categoryData) {
 		Category updatedCategory = this.service.update(id, categoryData);
 		return ResponseEntity.ok().body(updatedCategory);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Category> delete(@PathParam("id") String id) {
+	public ResponseEntity<Category> delete(@PathVariable("id") String id) {
 		this.service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
