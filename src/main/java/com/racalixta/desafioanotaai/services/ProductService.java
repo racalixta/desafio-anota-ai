@@ -10,16 +10,20 @@ import com.racalixta.desafioanotaai.domain.product.Product;
 import com.racalixta.desafioanotaai.domain.product.ProductDTO;
 import com.racalixta.desafioanotaai.domain.product.exception.ProductNotFoundException;
 import com.racalixta.desafioanotaai.repositories.ProductRepository;
+import com.racalixta.desafioanotaai.services.aws.AwsSnsService;
+import com.racalixta.desafioanotaai.services.aws.MessageDTO;
 
 @Service
 public class ProductService {
 
 	private CategoryService categoryService;
 	private ProductRepository repository;
+	private AwsSnsService snsService;
 	
-	public ProductService(CategoryService categoryService, ProductRepository repository) {
+	public ProductService(CategoryService categoryService, ProductRepository repository, AwsSnsService snsService) {
 		this.categoryService = categoryService;
 		this.repository = repository;
+		this.snsService = snsService;
 	}
 	
 	public Product insert(ProductDTO productData) {
@@ -27,6 +31,7 @@ public class ProductService {
 		Product newProduct = new Product(productData);
 		newProduct.setCategory(category);
 		this.repository.save(newProduct);
+		this.snsService.publish(new MessageDTO(newProduct.getOwnerId()));
 		return newProduct;
 	}
 	
@@ -41,7 +46,8 @@ public class ProductService {
 		if(!productData.description().isEmpty()) product.setDescription(productData.description());
 		if(!(productData.price() == null)) product.setPrice(productData.price());
 		
-		this.repository.save(product);	
+		this.repository.save(product);		
+		this.snsService.publish(new MessageDTO(product.getOwnerId()));
 		return product;
 	}
 	

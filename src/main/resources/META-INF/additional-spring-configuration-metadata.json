@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "aws.accessKeyId",
+    "type": "java.lang.String",
+    "description": "A description for 'aws.accessKeyId'"
+  },
+  {
+    "name": "aws.sns.topic.catalog.arn",
+    "type": "java.lang.String",
+    "description": "A description for 'aws.sns.topic.catalog.arn'"
+  },
+  {
+    "name": "aws.region",
+    "type": "java.lang.String",
+    "description": "A description for 'aws.region'"
+  },
+  {
+    "name": "aws.secretKey",
+    "type": "java.lang.String",
+    "description": "A description for 'aws.secretKey'"
+  }
+]}
