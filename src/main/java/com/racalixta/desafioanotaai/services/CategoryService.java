@@ -9,18 +9,24 @@ import com.racalixta.desafioanotaai.domain.category.Category;
 import com.racalixta.desafioanotaai.domain.category.CategoryDTO;
 import com.racalixta.desafioanotaai.domain.category.exception.CategoryNotFoundException;
 import com.racalixta.desafioanotaai.repositories.CategoryRepository;
+import com.racalixta.desafioanotaai.services.aws.AwsSnsService;
+import com.racalixta.desafioanotaai.services.aws.MessageDTO;
 
 @Service
 public class CategoryService {
 	private CategoryRepository repository;
+	private AwsSnsService snsService;
 	
-	public CategoryService(CategoryRepository repository) {
+	public CategoryService(CategoryRepository repository, AwsSnsService snsService) {
 		this.repository = repository;
+		this.snsService = snsService;
 	}
 	
 	public Category insert(CategoryDTO categoryData) {
 		Category newCategory = new Category(categoryData);
+		
 		this.repository.save(newCategory);
+		this.snsService.publish(new MessageDTO(newCategory.toString()));
 		return newCategory;
 	}
 	
@@ -31,7 +37,7 @@ public class CategoryService {
 		if(!categoryData.description().isEmpty()) category.setDescription(categoryData.description());
 		
 		this.repository.save(category);
-		
+		this.snsService.publish(new MessageDTO(category.toString()));
 		return category;
 	}
 	
